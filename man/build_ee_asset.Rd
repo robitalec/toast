@@ -8,8 +8,30 @@ build_ee_asset(DT, out, projection, id = "id", coords = c("X", "Y"),
   extra = NULL, overwrite = FALSE)
 }
 \arguments{
+\item{DT}{data.table}
+
 \item{out}{pathname of output shapefile folder. Includes location of the output folder but does not matter if that folder exists. The last portion of the pathname will be used for the layer name e.g.: 'path/to/caribou' layer name = 'caribou'}
+
+\item{projection}{character string indicating projection}
+
+\item{id}{point id column name}
+
+\item{coords}{coordinates column name for X and Y as character vector}
+
+\item{extra}{columns preserved in output asset}
+
+\item{overwrite}{boolean passed to option \code{overwrite_layer} in \code{writeOGR}}
 }
 \description{
 Build an Earth Engine asset from a data.table of locs.
+}
+\examples{
+# Set string of project
+utm21N <- '+proj=utm +zone=21 ellps=WGS84'
+
+# Setnames to build_ee_asset defaults
+setnames(DT, c('ptID', 'EASTING', 'NORTHING'), c('id', 'X', 'Y'))
+
+# Write out shapefile and zip for EE
+build_ee_asset(DT, 'data/derived-data/48hr-caribou', utm21N)
 }

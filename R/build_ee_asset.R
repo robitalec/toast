@@ -2,8 +2,22 @@
 #'
 #' Build an Earth Engine asset from a data.table of locs.
 #'
-#'
+#' @param DT data.table
 #' @param out pathname of output shapefile folder. Includes location of the output folder but does not matter if that folder exists. The last portion of the pathname will be used for the layer name e.g.: 'path/to/caribou' layer name = 'caribou'
+#' @param projection character string indicating projection
+#' @param id point id column name
+#' @param coords coordinates column name for X and Y as character vector
+#' @param extra columns preserved in output asset
+#' @param overwrite boolean passed to option \code{overwrite_layer} in \code{writeOGR}
+#' @examples
+#' # Set string of project
+#' utm21N <- '+proj=utm +zone=21 ellps=WGS84'
+#'
+#' # Setnames to build_ee_asset defaults
+#' setnames(DT, c('ptID', 'EASTING', 'NORTHING'), c('id', 'X', 'Y'))
+#'
+#' # Write out shapefile and zip for EE
+#' build_ee_asset(DT, 'data/derived-data/48hr-caribou', utm21N)
 build_ee_asset <-
 	function(DT,
 					 out,
@@ -16,12 +30,13 @@ build_ee_asset <-
 		pts <- SpatialPointsDataFrame(DT[, ..coords],
 																	proj4string = CRS(projection),
 																	data = DT[, ..extra])
+
+		# TODO: column checks for shapefile standards
 		writeOGR(pts,
 						 out,
 						 tail(tstrsplit(t, '/'), n = 1L),
 						 driver = "ESRI Shapefile",
 						 overwrite_layer = overwrite)
 
-		# zip('output/elkshp.zip', dir('output/elkshp', full.names = TRUE))
-
+		zip(paste0(out, '.zip'), dir(out, full.names = TRUE))
 	}
