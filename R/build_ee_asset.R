@@ -3,12 +3,22 @@
 #' Build an Earth Engine asset from a data.table of locs.
 #'
 #' @param DT data.table
+#'
 #' @param out pathname of output shapefile folder. Includes location of the output folder but does not matter if that folder exists. The last portion of the pathname will be used for the layer name e.g.: 'path/to/caribou' layer name = 'caribou'
+#'
 #' @param projection character string indicating projection
+#'
 #' @param id point id column name
+#'
 #' @param coords coordinates column name for X and Y as character vector
+#'
 #' @param extra columns preserved in output asset
+#'
 #' @param overwrite boolean passed to option \code{overwrite_layer} in \code{writeOGR}
+#'
+#'
+#' @export
+#'
 #' @examples
 #' # Set string of project
 #' utm21N <- '+proj=utm +zone=21 ellps=WGS84'
@@ -26,17 +36,21 @@ build_ee_asset <-
 					 coords = c('X', 'Y'),
 					 extra = NULL,
 					 overwrite = FALSE) {
+		# NSE errors
+		..coords <- ..extra <- NULL
+
+
 		extra <- c(id, extra)
-		pts <- SpatialPointsDataFrame(DT[, ..coords],
-																	proj4string = CRS(projection),
-																	data = DT[, ..extra])
+		pts <- sp::SpatialPointsDataFrame(DT[, ..coords],
+																			proj4string = sp::CRS(projection),
+																			data = DT[, ..extra])
 
 		# TODO: column checks for shapefile standards
-		writeOGR(pts,
-						 out,
-						 tail(tstrsplit(t, '/'), n = 1L),
-						 driver = "ESRI Shapefile",
-						 overwrite_layer = overwrite)
+		rgdal::writeOGR(pts,
+										out,
+										tail(data.table::tstrsplit(t, '/'), n = 1L),
+										driver = "ESRI Shapefile",
+										overwrite_layer = overwrite)
 
 		zip(paste0(out, '.zip'), dir(out, full.names = TRUE))
 	}
