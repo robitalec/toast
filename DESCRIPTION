@@ -1,12 +1,12 @@
 Package: toast
-Title: What the Package Does (One Line, Title Case)
+Title: Very Dry. 
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Alec",
+           family = "Robitaille",
            role = c("aut", "cre"),
-           email = "first.last@example.com")
-Description: What the package does (one paragraph).
+           email = "robit.alec@gmail.com")
+Description: Very dry. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
