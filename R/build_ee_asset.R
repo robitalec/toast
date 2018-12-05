@@ -24,7 +24,7 @@
 #' utm21N <- '+proj=utm +zone=21 ellps=WGS84'
 #'
 #' # Setnames to build_ee_asset defaults
-#' setnames(DT, c('ptID', 'EASTING', 'NORTHING'), c('id', 'X', 'Y'))
+#' data.table::setnames(DT, c('ptID', 'EASTING', 'NORTHING'), c('id', 'X', 'Y'))
 #'
 #' # Write out shapefile and zip for EE
 #' build_ee_asset(DT, 'data/derived-data/48hr-caribou', utm21N)
@@ -48,9 +48,9 @@ build_ee_asset <-
 		# TODO: column checks for shapefile standards
 		rgdal::writeOGR(pts,
 										out,
-										tail(data.table::tstrsplit(t, '/'), n = 1L),
+										utils::tail(data.table::tstrsplit(t, '/'), n = 1L),
 										driver = "ESRI Shapefile",
 										overwrite_layer = overwrite)
 
-		zip(paste0(out, '.zip'), dir(out, full.names = TRUE))
+		utils::zip(paste0(out, '.zip'), dir(out, full.names = TRUE))
 	}

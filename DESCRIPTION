@@ -1,5 +1,5 @@
 Package: toast
-Title: Very Dry. 
+Title: Very Dry
 Version: 0.0.0.9001
 Authors@R: 
     person(given = "Alec",
@@ -12,3 +12,7 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
+Imports: 
+    sp,
+    data.table,
+    rgdal

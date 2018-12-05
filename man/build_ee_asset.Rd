@@ -30,7 +30,7 @@ Build an Earth Engine asset from a data.table of locs.
 utm21N <- '+proj=utm +zone=21 ellps=WGS84'
 
 # Setnames to build_ee_asset defaults
-setnames(DT, c('ptID', 'EASTING', 'NORTHING'), c('id', 'X', 'Y'))
+data.table::setnames(DT, c('ptID', 'EASTING', 'NORTHING'), c('id', 'X', 'Y'))
 
 # Write out shapefile and zip for EE
 build_ee_asset(DT, 'data/derived-data/48hr-caribou', utm21N)
