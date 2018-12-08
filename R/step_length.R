@@ -5,6 +5,7 @@
 #' @param DT data.table
 #' @param coords character vector, length 2, coordinate column names. UTM required.
 #' @param time character time column name.
+#' @param splitBy character vector of column names to split step length calculation by. default is id and yr (individual identifier and year as numeric).
 #' @param type default: lag. alternative: lead.
 #' @param moverate calculate movement rate? stepLength / dif time, unit hours.
 #' @import data.table
@@ -13,8 +14,8 @@
 #'
 #' @examples
 #'
-step_length <- function(DT, coords = c('EASTING', 'NORTHING'), id = 'id',
-												time = 'datetime', type = 'lag', moverate = FALSE) {
+step_length <- function(DT, coords = c('EASTING', 'NORTHING'), time = 'datetime',
+												splitBy = c('id', 'yr'), type = 'lag', moverate = FALSE) {
 
 	yr <- .SD <- stepLength <- moveRate <- NULL
 
