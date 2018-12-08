@@ -40,6 +40,8 @@ step_length <- function(DT, coords = c('EASTING', 'NORTHING'), time = 'datetime'
 	DT[, stepLength := sqrt(rowSums(.SD)),
 			 .SDcols = difXY]
 
+	DT[is.na(get(difXY[1])) | is.na(get(difXY[2])), stepLength := NA]
+
 	if (!preserve) {
 		set(DT, j = c(shiftXY, difXY), value = NULL)
 	}
