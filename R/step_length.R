@@ -43,25 +43,30 @@ step_length <-
 
 	DT[is.na(get(difXY[1])) | is.na(get(difXY[2])), stepLength := NA]
 
-	if (!preserve) {
-		set(DT, j = c(shiftXY, difXY), value = NULL)
-	}
+
+	dropem <- c(shiftXY, difXY)
 
 	if (moverate) {
+
 		shiftT <- paste0('lag', time)
 		difT <- paste0('dif', time)
 
+		dropem <- c(dropem, shiftT, difT)
+
 		DT[order(get(time)), (shiftT) := data.table::shift(.SD, 1, NA, 'lag'),
-				 by = c(id, yr),
-				 .SDcols = time]
+			 by = splitBy,
+			 .SDcols = time]
 
-		DT[, (difT) := as.numeric(get(.SD[1]) - get(.SD[2]), units = 'hours'),
-				 .SDcols = c(time, shiftT)]
+		DT[, (difT) := as.numeric(.SD[[1]] - .SD[[2]], units = 'hours'),
+			 .SDcols = c(time, shiftT)]
 
-		DT[, moveRate := .SD[1] / .SD[2],
+		DT[, moveRate := .SD[[1]] / .SD[[2]],
 			 .SDcols = c('stepLength', difT)]
-
-
 	}
+
+	if (!preserve) {
+		set(DT, j = dropem, value = NULL)
+	}
+
 
 }
