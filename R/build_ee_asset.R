@@ -44,7 +44,7 @@ build_ee_asset <-
 		# TODO: column checks for shapefile standards
 		rgdal::writeOGR(pts,
 										out,
-										utils::tail(data.table::tstrsplit(t, '/'), n = 1L),
+										utils::tail(data.table::tstrsplit(out, '/'), n = 1L),
 										driver = "ESRI Shapefile",
 										overwrite_layer = overwrite)
 
