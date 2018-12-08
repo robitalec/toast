@@ -5,38 +5,54 @@
 #' @param DT data.table
 #' @param coords character vector, length 2, coordinate column names. UTM required.
 #' @param time character time column name.
+#' @param type default: lag. alternative: lead.
+#' @param moverate calculate movement rate? stepLength / dif time, unit hours.
+#' @import data.table
+#'
+#' @export
+#'
+#' @examples
+#'
+step_length <- function(DT, coords = c('EASTING', 'NORTHING'), id = 'id',
+												time = 'datetime', type = 'lag', moverate = FALSE) {
 
-# Set columns
-time.col <- 'datetime'
-coord.cols <- c('EASTING', 'NORTHING')
+	yr <- .SD <- stepLength <- moveRate <- NULL
 
-# Create lag and dif column names
-lag.cols <- paste('lag', coord.cols, sep = '')
-difference.cols <- c('difX', 'difY')
+	shiftXY <- paste0('lag', coords)
+	difXY <- paste0('dif', coords)
 
-lag.time.col <- paste0('lag', time.col)
-dif.time.col <- paste0('dif', time.col)
+	if (DT[, data.table::uniqueN(data.table::year(.SD)), .SDcols = time] > 1) {
+		DT[, yr := data.table::year(.SD[1]), .SDcols = time]
+	}
 
-# Use shift  to create lagged cols
-locs[order(get(time.col)), (lag.cols) := shift(.SD, 1, NA, 'lag'),
-		 by = .(ANIMAL_ID, year),
-		 .SDcols = coord.cols]
+	DT[order(get(time)),
+		 (shiftXY) := data.table::shift(.SD, n = 1, fill = NA, type),
+		 by = c(id, yr),
+		 .SDcols = coords]
 
-# Find the difference squared between all points in each x,y separately
-locs[, (difference.cols) := .((get(coord.cols[1]) - get(lag.cols[1])) ^2,
-															(get(coord.cols[2]) - get(lag.cols[2])) ^2)]
+	DT[, (difXY) :=
+		 	.((get(.SD[1]) - get(.SD[3])) ^ 2,
+		 		(get(.SD[2]) - get(.SD[4])) ^ 2),
+		 .SDcols = c(coords, shiftXY)]
 
-# Square root the summed difference for a simple step length
-locs[, simpleStep := sqrt(rowSums(.SD)),
-		 .SDcols = difference.cols]
+	DT[, stepLength := sqrt(rowSums(.SD)),
+			 .SDcols = difXY]
 
-## Delta Time
-locs[order(get(time.col)), (lag.time.col) := shift(.SD, 1, NA, 'lag'),
-		 by = .(ANIMAL_ID, year),
-		 .SDcols = time.col]
+	if (moverate) {
+		shiftT <- paste0('lag', time)
+		difT <- paste0('dif', time)
 
-# difference in time in hours
-locs[, (dif.time.col) := as.numeric(get(time.col) - get(lag.time.col), units = 'hours')]
+		DT[order(get(time)), (shiftT) := data.table::shift(.SD, 1, NA, 'lag'),
+				 by = c(id, yr),
+				 .SDcols = time]
 
-# Simple step length divided by time difference
-locs[, moveRate := simpleStep / (get(dif.time.col))]
+		DT[, (difT) := as.numeric(get(.SD[1]) - get(.SD[2]), units = 'hours'),
+				 .SDcols = c(time, shiftT)]
+
+		DT[, moveRate := .SD[1] / .SD[2],
+			 .SDcols = c('stepLength', difT)]
+
+
+	}
+
+}
