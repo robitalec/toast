@@ -36,14 +36,10 @@ build_ee_asset <-
 					 coords = c('X', 'Y'),
 					 extra = NULL,
 					 overwrite = FALSE) {
-		# NSE errors
-		..coords <- ..extra <- NULL
-
-
 		extra <- c(id, extra)
-		pts <- sp::SpatialPointsDataFrame(DT[, ..coords],
+		pts <- sp::SpatialPointsDataFrame(DT[, .SD, .SDcols = coords],
 																			proj4string = sp::CRS(projection),
-																			data = DT[, ..extra])
+																			data = DT[, .SD, .SDcols = extra])
 
 		# TODO: column checks for shapefile standards
 		rgdal::writeOGR(pts,
