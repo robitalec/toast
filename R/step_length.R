@@ -20,8 +20,8 @@ step_length <-
 					 coords = c('EASTING', 'NORTHING'),
 					 time = 'datetime',
 					 splitBy = c('id', 'yr'),
-					 type = 'lag',
 					 moverate = FALSE,
+					 type = 'lag',
 					 preserve = FALSE) {
 
 
@@ -42,7 +42,6 @@ step_length <-
 		 .SDcols = difXY]
 
 	DT[is.na(get(difXY[1])) | is.na(get(difXY[2])), stepLength := NA]
-
 
 	dropem <- c(shiftXY, difXY)
 
@@ -68,5 +67,5 @@ step_length <-
 		set(DT, j = dropem, value = NULL)
 	}
 
-
+	DT[]
 }
