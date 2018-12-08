@@ -4,8 +4,9 @@
 \alias{step_length}
 \title{Step Length}
 \usage{
-step_length(DT, coords = c("EASTING", "NORTHING"), id = "id",
-  time = "datetime", type = "lag", moverate = FALSE)
+step_length(DT, coords = c("EASTING", "NORTHING"), time = "datetime",
+  splitBy = c("id", "yr"), type = "lag", moverate = FALSE,
+  preserve = FALSE)
 }
 \arguments{
 \item{DT}{data.table}
@@ -14,9 +15,13 @@ step_length(DT, coords = c("EASTING", "NORTHING"), id = "id",
 
 \item{time}{character time column name.}
 
+\item{splitBy}{character vector of column names to split step length calculation by. default is id and yr (individual identifier and year as numeric).}
+
 \item{type}{default: lag. alternative: lead.}
 
 \item{moverate}{calculate movement rate? stepLength / dif time, unit hours.}
+
+\item{preserve}{preserve intermediate cols? default: no.}
 }
 \description{
 Calculate step length with data.table

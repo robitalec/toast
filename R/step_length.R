@@ -15,30 +15,31 @@
 #'
 #' @examples
 #'
-step_length <- function(DT, coords = c('EASTING', 'NORTHING'), time = 'datetime',
-												splitBy = c('id', 'yr'), type = 'lag', moverate = FALSE) {
+step_length <-
+	function(DT,
+					 coords = c('EASTING', 'NORTHING'),
+					 time = 'datetime',
+					 splitBy = c('id', 'yr'),
+					 type = 'lag',
+					 moverate = FALSE,
+					 preserve = FALSE) {
 
-	yr <- .SD <- stepLength <- moveRate <- NULL
+
+	.SD <- stepLength <- moveRate <- NULL
 
 	shiftXY <- paste0('lag', coords)
 	difXY <- paste0('dif', coords)
 
-	if (DT[, data.table::uniqueN(data.table::year(.SD)), .SDcols = time] > 1) {
-		DT[, yr := data.table::year(.SD[1]), .SDcols = time]
-	}
-
 	DT[order(get(time)),
 		 (shiftXY) := data.table::shift(.SD, n = 1, fill = NA, type),
-		 by = c(id, yr),
+		 by = splitBy,
 		 .SDcols = coords]
 
-	DT[, (difXY) :=
-		 	.((get(.SD[1]) - get(.SD[3])) ^ 2,
-		 		(get(.SD[2]) - get(.SD[4])) ^ 2),
-		 .SDcols = c(coords, shiftXY)]
+	DT[, (difXY) := .((.SD[[1]] - .SD[[3]]) ^ 2, (.SD[[2]] - .SD[[4]]) ^ 2),
+     .SDcols = c(coords, shiftXY)]
 
-	DT[, stepLength := sqrt(rowSums(.SD)),
-			 .SDcols = difXY]
+	DT[, stepLength := sqrt(rowSums(.SD, na.rm = TRUE)),
+		 .SDcols = difXY]
 
 	DT[is.na(get(difXY[1])) | is.na(get(difXY[2])), stepLength := NA]
 
