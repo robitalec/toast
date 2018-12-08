@@ -8,6 +8,7 @@
 #' @param splitBy character vector of column names to split step length calculation by. default is id and yr (individual identifier and year as numeric).
 #' @param type default: lag. alternative: lead.
 #' @param moverate calculate movement rate? stepLength / dif time, unit hours.
+#' @param preserve preserve intermediate cols? default: no.
 #' @import data.table
 #'
 #' @export
@@ -38,6 +39,10 @@ step_length <- function(DT, coords = c('EASTING', 'NORTHING'), time = 'datetime'
 
 	DT[, stepLength := sqrt(rowSums(.SD)),
 			 .SDcols = difXY]
+
+	if (!preserve) {
+		set(DT, j = c(shiftXY, difXY), value = NULL)
+	}
 
 	if (moverate) {
 		shiftT <- paste0('lag', time)
