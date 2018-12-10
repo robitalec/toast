@@ -24,7 +24,7 @@ step_length(DT, coords = c("EASTING", "NORTHING"), time = "datetime",
 \item{preserve}{preserve intermediate cols? default: no.}
 }
 \description{
-Calculate step length with data.table
+Calculate basic step length with data.table
 }
 \examples{
 

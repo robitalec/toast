@@ -1,6 +1,6 @@
 #' Step Length
 #'
-#' Calculate step length with data.table
+#' Calculate basic step length with data.table
 #'
 #' @param DT data.table
 #' @param coords character vector, length 2, coordinate column names. UTM required.
