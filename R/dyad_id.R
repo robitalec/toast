@@ -47,8 +47,8 @@ dyad_id <- function(DT = NULL, focal = 'id', neighbour= NULL) {
 		nms <- c('focal', 'neighbour', 'dyadID')
 		data.table::setnames(out, nms)
 
-		out
-	})
+		return(out)
+	}
 
 	if (!is.null(neighbour)) {
 		check_col(DT, neighbour, 'neighbour')
@@ -59,34 +59,22 @@ dyad_id <- function(DT = NULL, focal = 'id', neighbour= NULL) {
 	# 	DT[, dyadID := NULL]
 	# }
 
-	g <- igraph::graph_from_edgelist(
-		as.matrix(unique(DT[!is.na(get(neighbour)),
-													.(get(id), get(neighbour))])),
-		directed = FALSE
-	)
-
-	simpleG <- igraph::simplify(g)
-
-	edgeDT <- data.table(get.edgelist(simpleG),
-											 E(simpleG))
-	edgeNames <- c('id1', 'id2', 'dyadID')
-	setnames(edgeDT, edgeNames)
-
-	# Double merge
-	# First where left goes to dyadID
-	# Then where right goes to dyadID2 and the order revered in by.y
-	dyads <- merge(
-		merge(inDT,
-					edgeDT,
-					by.x = c(idcol, neighbour),
-					by.y = edgeNames[1:2],
-					all.x = TRUE),
-		edgeDT[, .(id1, id2, dyadID2 = dyadID)],
-		by.x = c(idcol, neighbour),
-		by.y = edgeNames[2:1],
-		all.x = TRUE)
-
-	# Then dyadID filled with dyadID2
-	# and dyadID2 dropped
-	dyads[is.na(dyadID), dyadID := dyadID2][, dyadID2 := NULL][]
+	# # Double merge
+	# # First where left goes to dyadID
+	# # Then where right goes to dyadID2 and the order revered in by.y
+	# dyads <- merge(
+	# 	merge(DT,
+	# 				edgeDT,
+	# 				by.x = c(id, neighbour),
+	# 				by.y = edgeNames[1:2],
+	# 				all.x = TRUE),
+	# 	edgeDT[, .(id1, id2, dyadID2 = dyadID)],
+	# 	by.x = c(id, neighbour),
+	# 	by.y = edgeNames[2:1],
+	# 	all.x = TRUE)
+	#
+	# # Then dyadID filled with dyadID2
+	# # and dyadID2 dropped
+	# dyads[is.na(dyadID), dyadID := dyadID2][, dyadID2 := NULL][]
+	}
 }
