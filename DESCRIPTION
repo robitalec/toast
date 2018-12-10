@@ -18,3 +18,5 @@ Imports:
     data.table,
     rgdal,
     igraph
+Suggests: 
+    testthat
