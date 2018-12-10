@@ -4,7 +4,7 @@
 \alias{dyad_id}
 \title{Dyad ID}
 \usage{
-dyad_id(DT = NULL, focal = "id", neighbour = NULL)
+dyad_id(DT = NULL, focal = "id", neighbour = NULL, both = FALSE)
 }
 \arguments{
 \item{DT}{data.table.}
@@ -12,6 +12,8 @@ dyad_id(DT = NULL, focal = "id", neighbour = NULL)
 \item{focal}{focal individual.}
 
 \item{neighbour}{neighbours, optional - see Details.}
+
+\item{both}{if both is TRUE, returns duplicated dyadIDs with all focal/neighbour inverted and appended.}
 }
 \value{
 If neighbour is not provided, all potential dyads are returned as a "dyad dictionary".
