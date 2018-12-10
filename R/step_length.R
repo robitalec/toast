@@ -23,49 +23,55 @@ step_length <-
 					 moverate = FALSE,
 					 type = 'lag',
 					 preserve = FALSE) {
+		# NSE errors
+		.SD <- stepLength <- moveRate <- NULL
 
+		if (type == 'lag' | type == 'lead') {
+			stop('must provide one of lag or lead for argument type')
+		}
 
-	.SD <- stepLength <- moveRate <- NULL
+		check_col(DT, coords, 'coords')
+		check_col(DT, time, 'time')
+		check_col(DT, splitBy)
 
-	shiftXY <- paste0('lag', coords)
-	difXY <- paste0('dif', coords)
+		shiftXY <- paste0('lag', coords)
+		difXY <- paste0('dif', coords)
 
-	DT[order(get(time)),
-		 (shiftXY) := data.table::shift(.SD, n = 1, fill = NA, type),
-		 by = splitBy,
-		 .SDcols = coords]
-
-	DT[, (difXY) := .((.SD[[1]] - .SD[[3]]) ^ 2, (.SD[[2]] - .SD[[4]]) ^ 2),
-     .SDcols = c(coords, shiftXY)]
-
-	DT[, stepLength := sqrt(rowSums(.SD, na.rm = TRUE)),
-		 .SDcols = difXY]
-
-	DT[is.na(get(difXY[1])) | is.na(get(difXY[2])), stepLength := NA]
-
-	dropem <- c(shiftXY, difXY)
-
-	if (moverate) {
-
-		shiftT <- paste0('lag', time)
-		difT <- paste0('dif', time)
-
-		dropem <- c(dropem, shiftT, difT)
-
-		DT[order(get(time)), (shiftT) := data.table::shift(.SD, 1, NA, 'lag'),
+		DT[order(get(time)),
+			 (shiftXY) := data.table::shift(.SD, n = 1, fill = NA, type),
 			 by = splitBy,
-			 .SDcols = time]
+			 .SDcols = coords]
 
-		DT[, (difT) := as.numeric(.SD[[1]] - .SD[[2]], units = 'hours'),
-			 .SDcols = c(time, shiftT)]
+		DT[, (difXY) := .((.SD[[1]] - .SD[[3]]) ^ 2, (.SD[[2]] - .SD[[4]]) ^ 2),
+			 .SDcols = c(coords, shiftXY)]
 
-		DT[, moveRate := .SD[[1]] / .SD[[2]],
-			 .SDcols = c('stepLength', difT)]
+		DT[, stepLength := sqrt(rowSums(.SD, na.rm = TRUE)),
+			 .SDcols = difXY]
+
+		DT[is.na(get(difXY[1])) | is.na(get(difXY[2])), stepLength := NA]
+
+		dropem <- c(shiftXY, difXY)
+
+		if (moverate) {
+			shiftT <- paste0('lag', time)
+			difT <- paste0('dif', time)
+
+			dropem <- c(dropem, shiftT, difT)
+
+			DT[order(get(time)), (shiftT) := data.table::shift(.SD, 1, NA, 'lag'),
+				 by = splitBy,
+				 .SDcols = time]
+
+			DT[, (difT) := as.numeric(.SD[[1]] - .SD[[2]], units = 'hours'),
+				 .SDcols = c(time, shiftT)]
+
+			DT[, moveRate := .SD[[1]] / .SD[[2]],
+				 .SDcols = c('stepLength', difT)]
+		}
+
+		if (!preserve) {
+			set(DT, j = dropem, value = NULL)
+		}
+
+		DT[]
 	}
-
-	if (!preserve) {
-		set(DT, j = dropem, value = NULL)
-	}
-
-	DT[]
-}
