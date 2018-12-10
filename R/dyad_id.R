@@ -1,10 +1,60 @@
-dyad_id <- function(inDT, idcol, neighbour) {
-	if('dyadID' %in% colnames(inDT)) {
-		warning('dropping dyadID from inDT'); inDT[, dyadID := NULL]
-	}
+#' Dyad ID
+#'
+#' Build unique ID for dyads of focal individuals (and neighbours).
+#'
+#' This function builds a dyad ID: focal A -> neighbour B (and focal B -> neighbour A) = dyad 1.
+#'
+#'
+#' @param DT data.table.
+#' @param focal focal individual.
+#' @param neighbour neighbours, optional - see Details.
+#'
+#' @return
+#'
+#' If neighbour is not provided, all potential dyads are returned as a "dyad dictionary".
+#'
+#' Alternatively, when observed neighbours are provided, a "dyadID" column is added to the data.table with the individuals
+#'
+#' @export
+#'
+#' @examples
+dyad_id <- function(DT = NULL, focal = 'id', neighbour= NULL) {
+
+	check_col(DT, focal, 'focal')
+
+
+	if (is.null(neighbour) {
+		ids <- DT[, expand.grid(unique(.SD[[1]]), unique(.SD[[1]])),
+							.SDcols = focal]
+
+		g <- igraph::graph_from_edgelist(
+			as.matrix(ids),
+			directed = FALSE
+		)
+
+		simpler <- igraph::simplify(g)
+		out <- data.table::data.table(
+			igraph::get.edgelist(simpler),
+			igraph::E(simpler))
+
+		nms <- c('focal', 'neighbour', 'dyadID')
+		data.table::setnames(out, nms)
+
+		out
+	})
+
+	if (!is.null(neighbour)) {
+		check_col(DT, neighbour, 'neighbour')
+
+		stop('in dev')
+	# if ('dyadID' %in% colnames(DT)) {
+	# 	warning('dropping dyadID from DT')
+	# 	DT[, dyadID := NULL]
+	# }
+
 	g <- igraph::graph_from_edgelist(
-		as.matrix(unique(inDT[!is.na(get(neighbour)),
-													.(get(idcol), get(neighbour))])),
+		as.matrix(unique(DT[!is.na(get(neighbour)),
+													.(get(id), get(neighbour))])),
 		directed = FALSE
 	)
 
