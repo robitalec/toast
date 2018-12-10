@@ -16,4 +16,5 @@ RoxygenNote: 6.1.0
 Imports: 
     sp,
     data.table,
-    rgdal
+    rgdal,
+    igraph
