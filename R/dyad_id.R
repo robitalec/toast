@@ -29,8 +29,8 @@ dyad_id <- function(DT = NULL, focal = 'id', neighbour= NULL) {
 	# NSE errors
 	. <- NULL
 
-
 	check_col(DT, focal, 'focal')
+	check_type(DT, focal, c('numeric', 'character'))
 
 	if (is.null(neighbour)) {
 		ids <- DT[, expand.grid(unique(.SD[[1]]), unique(.SD[[1]])),
