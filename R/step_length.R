@@ -15,6 +15,18 @@
 #'
 #' @examples
 #'
+#' # Load data.table
+#' library(data.table)
+#'
+#' # Read example data
+#' DT <- fread(system.file("extdata", "DT.csv", package = "toast"))
+#'
+#' DT[, datetime := as.POSIXct(datetime)]
+#'
+#' DT[, yr := year(datetime)]
+#'
+#' step_length(DT, coords = c('X', 'Y'), splitBy = c('ID', 'yr'))
+#'
 step_length <-
 	function(DT,
 					 coords = c('EASTING', 'NORTHING'),

@@ -28,4 +28,16 @@ Calculate basic step length with data.table
 }
 \examples{
 
+# Load data.table
+library(data.table)
+
+# Read example data
+DT <- fread(system.file("extdata", "DT.csv", package = "toast"))
+
+DT[, datetime := as.POSIXct(datetime)]
+
+DT[, yr := year(datetime)]
+
+step_length(DT, coords = c('X', 'Y'), splitBy = c('ID', 'yr'))
+
 }
