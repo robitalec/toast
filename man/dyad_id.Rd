@@ -25,12 +25,11 @@ Build unique ID for dyads of focal individuals (and neighbours).
 This function builds a dyad ID: focal A -> neighbour B (and focal B -> neighbour A) = dyad 1.
 }
 \examples{
-
 # Load data.table
 library(data.table)
 
 # Read example data
-DT <- fread(system.file("extdata", "DT.csv", package = "spatsoc"))
+DT <- fread(system.file("extdata", "DT.csv", package = "toast"))
 
 dyadDict <- dyad_id(DT, focal = 'ID', neighbour = NULL)
 }
