@@ -33,7 +33,7 @@ dyad_id <- function(DT = NULL, focal = 'id', neighbour= NULL) {
 	check_type(DT, focal, c('numeric', 'character'))
 
 	if (is.null(neighbour)) {
-		ids <- DT[, expand.grid(unique(.SD[[1]]), unique(.SD[[1]])),
+		ids <- DT[, data.table::CJ(unique(.SD[[1]]), unique(.SD[[1]])),
 							.SDcols = focal]
 
 		g <- igraph::graph_from_edgelist(
