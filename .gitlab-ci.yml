@@ -14,7 +14,7 @@ test_latest:
   - master
 
 coverage_job:
-  image: rocker/geopatial
+  image: rocker/geospatial
   stage: coverage
   when: on_success
   only:
