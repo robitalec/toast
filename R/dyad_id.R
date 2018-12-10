@@ -44,7 +44,7 @@ dyad_id <- function(DT = NULL, focal = 'id', neighbour= NULL) {
 		simpler <- igraph::simplify(g)
 		out <- data.table::data.table(
 			igraph::get.edgelist(simpler),
-			igraph::E(simpler))
+			as.numeric(igraph::E(simpler)))
 
 		nms <- c('focal', 'neighbour', 'dyadID')
 		data.table::setnames(out, nms)
