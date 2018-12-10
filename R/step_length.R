@@ -36,15 +36,16 @@ step_length <-
 					 type = 'lag',
 					 preserve = FALSE) {
 		# NSE errors
-		.SD <- stepLength <- moveRate <- NULL
+		.SD <- . <- stepLength <- moveRate <- NULL
 
-		if (type == 'lag' | type == 'lead') {
+		if (type != 'lag' & type != 'lead') {
 			stop('must provide one of lag or lead for argument type')
 		}
 
-		check_col(DT, coords, 'coords')
+		check_col(DT, coords[1], 'X coords')
+		check_col(DT, coords[2], 'Y coords')
 		check_col(DT, time, 'time')
-		check_col(DT, splitBy)
+		lapply(splitBy, function(col) check_col(DT, col))
 
 		shiftXY <- paste0('lag', coords)
 		difXY <- paste0('dif', coords)
