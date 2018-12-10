@@ -31,10 +31,11 @@
 #' utm21N <- '+proj=utm +zone=21 ellps=WGS84'
 #'
 #' # Setnames to build_ee_asset defaults
-#' data.table::setnames(DT, c('ptID', 'EASTING', 'NORTHING'), c('id', 'X', 'Y'))
+#' data.table::setnames(DT, 'ID', 'id')
 #'
 #' # Write out shapefile and zip for EE
-#' build_ee_asset(DT, 'data/derived-data/48hr-caribou', utm21N)
+#' # (not run)
+#' # build_ee_asset(DT, 'data/derived-data/48hr-caribou', utm21N)
 build_ee_asset <-
 	function(DT,
 					 out,
