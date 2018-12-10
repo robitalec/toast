@@ -54,6 +54,7 @@ dyad_id <- function(DT = NULL, focal = 'id', neighbour= NULL) {
 
 	if (!is.null(neighbour)) {
 		check_col(DT, neighbour, 'neighbour')
+		check_type(DT, neighbour, c('numeric', 'character'))
 
 		stop('in dev')
 	# if ('dyadID' %in% colnames(DT)) {
