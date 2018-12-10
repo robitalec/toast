@@ -11,15 +11,26 @@ dyad_id(DT = NULL, focal = "id", neighbour = NULL)
 
 \item{focal}{focal individual.}
 
-\item{neighbour}{neighbour, optional - see Details.}
+\item{neighbour}{neighbours, optional - see Details.}
+}
+\value{
+If neighbour is not provided, all potential dyads are returned as a "dyad dictionary".
+
+Alternatively, when observed neighbours are provided, a "dyadID" column is added to the data.table with the individuals
 }
 \description{
 Build unique ID for dyads of focal individuals (and neighbours).
 }
 \details{
-This function builds a dyad ID: individual A -> B and individual B -> A.
+This function builds a dyad ID: focal A -> neighbour B (and focal B -> neighbour A) = dyad 1.
+}
+\examples{
 
-If neighbour is not provided, all potential dyads are returned as a "dyad dictionary".
+# Load data.table
+library(data.table)
 
-Alternatively, when observed neighbours are provided, a "dyadID" column is added to the data.table with the individuals
+# Read example data
+DT <- fread(system.file("extdata", "DT.csv", package = "spatsoc"))
+
+dyadDict <- dyad_id(DT, focal = 'ID', neighbour = NULL)
 }
