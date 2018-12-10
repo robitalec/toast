@@ -22,4 +22,4 @@ coverage_job:
   script:
     - r -e 'install.packages("covr")'
     - r -e 'devtools::install()'
-    - r -e 'covr::codecov(type = c("tests", "examples"), quiet = FALSE, token = "49da8c07-70b6-46ee-a2e2-f1d1d5784a9a")'
+    - r -e 'covr::codecov(type = c("tests", "examples"), quiet = FALSE, token = "2077b2ff-8cc1-46b7-9e64-d56274b92892")'
