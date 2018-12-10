@@ -18,12 +18,19 @@
 #' @export
 #'
 #' @examples
+#'
+#' # Load data.table
+#' library(data.table)
+#'
+#' # Read example data
+#' DT <- fread(system.file("extdata", "DT.csv", package = "spatsoc"))
+#'
+#' dyadDict <- dyad_id(DT, focal = 'ID', neighbour = NULL)
 dyad_id <- function(DT = NULL, focal = 'id', neighbour= NULL) {
 
 	check_col(DT, focal, 'focal')
 
-
-	if (is.null(neighbour) {
+	if (is.null(neighbour)) {
 		ids <- DT[, expand.grid(unique(.SD[[1]]), unique(.SD[[1]])),
 							.SDcols = focal]
 
