@@ -20,6 +20,13 @@
 #' @export
 #'
 #' @examples
+#' # Load data.table
+#' library(data.table)
+#'
+#' # Read example data
+#' DT <- fread(system.file("extdata", "DT.csv", package = "toast"))
+#'
+#'
 #' # Set string of project
 #' utm21N <- '+proj=utm +zone=21 ellps=WGS84'
 #'

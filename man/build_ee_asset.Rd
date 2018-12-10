@@ -26,6 +26,13 @@ build_ee_asset(DT, out, projection, id = "id", coords = c("X", "Y"),
 Build an Earth Engine asset from a data.table of locs.
 }
 \examples{
+# Load data.table
+library(data.table)
+
+# Read example data
+DT <- fread(system.file("extdata", "DT.csv", package = "toast"))
+
+
 # Set string of project
 utm21N <- '+proj=utm +zone=21 ellps=WGS84'
 
