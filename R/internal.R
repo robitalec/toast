@@ -8,7 +8,7 @@ check_col <- function(DT = NULL, col = NULL, arg = NULL, extra = NULL) {
 	if (is.null(arg)) {
 		it <- col
 	} else {
-		it <- arg
+		it <- paste0(arg, " ('", col, "')")
 	}
 
 	if (!(col %in% colnames(DT))) {
@@ -17,9 +17,9 @@ check_col <- function(DT = NULL, col = NULL, arg = NULL, extra = NULL) {
 }
 
 #' check type
-#' @param DT data.table
-#' @param col column name
-#' @param type
+#' @param DT data.table.
+#' @param col column name.
+#' @param type typeof type type typeof type.
 check_type <- function(DT = NULL, col = NULL, type = NULL) {
 	if (!(typeof(DT[[col]]) %in% type)) {
 		stop(paste0(col, ' does not match required type: ', type))
