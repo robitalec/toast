@@ -2,6 +2,7 @@
 
 export(bounding)
 export(build_ee_asset)
+export(camera_grid)
 export(dyad_id)
 export(step_length)
 import(data.table)
