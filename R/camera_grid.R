@@ -1,15 +1,23 @@
 #' Camera grid
 #'
-#' @param DT
-#' @param id
+#' Set up a camera grid around a focal point.
+#'
+#' @param DT data.table.
+#' @param id id of focal point.
 #' @param case "queen", "rook" or "bishop".
-#' @param distance
-#' @param coords
+#' @param distance distance in x and y between cameras. don't worry about the hypotenuse.
+#' @param coords names of coordinate columns.
 #'
 #' @return
+#'
+#' Extended data.table either nine times the length of input DT for 'queen' case or 5 times the length of input DT for 'rook' or 'bishop' case.
+#'
+#' The logical 'focal' column indicates which point is the focal.
+#'
 #' @export
 #'
 #' @examples
+#' grid <- camera_grid(DT, id = 'point', case = 'queen', distance = 250, coords = c('X', 'Y'))
 camera_grid <- function(DT, id, case, distance, coords) {
 	# NSE
 	focal <- camX <- camY <- NULL;

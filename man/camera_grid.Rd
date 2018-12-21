@@ -7,8 +7,24 @@
 camera_grid(DT, id, case, distance, coords)
 }
 \arguments{
-\item{coords}{}
+\item{DT}{data.table.}
+
+\item{id}{id of focal point.}
+
+\item{case}{"queen", "rook" or "bishop".}
+
+\item{distance}{distance in x and y between cameras. don't worry about the hypotenuse.}
+
+\item{coords}{names of coordinate columns.}
+}
+\value{
+Extended data.table either nine times the length of input DT for 'queen' case or 5 times the length of input DT for 'rook' or 'bishop' case.
+
+The logical 'focal' column indicates which point is the focal.
 }
 \description{
-Camera grid
+Set up a camera grid around a focal point.
+}
+\examples{
+grid <- camera_grid(DT, id = 'point', case = 'queen', distance = 250, coords = c('X', 'Y'))
 }
