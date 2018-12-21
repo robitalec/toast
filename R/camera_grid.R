@@ -2,7 +2,7 @@
 #'
 #' @param DT
 #' @param id
-#' @param case
+#' @param case "queen", "rook" or "bishop".
 #' @param distance
 #' @param coords
 #'
@@ -11,6 +11,9 @@
 #'
 #' @examples
 camera_grid <- function(DT, id, case, distance, coords) {
+	# NSE
+	focal <- camX <- camY <- NULL;
+
 	if (case == 'queen') {
 		move <- data.table::CJ(c(-distance, 0, distance),
 													 c(-distance, 0, distance))
@@ -22,8 +25,10 @@ camera_grid <- function(DT, id, case, distance, coords) {
 																	 c(distance, 0, -distance, 0))
 	}
 
-	DT[rep(1:.N, times = nrow(move)),
-		 .SD + move,
+	DT <- DT[rep(1:.N, times = nrow(move))]
+	DT[, c('camX', 'camY') := .SD + move,
 		 .SDcols = coords,
-		 by = c(id)]
+		 by = id]
+	DT[camX == get(coords[[1]]) & camY == get(coords[[2]]),
+		 focal := TRUE]
 }
