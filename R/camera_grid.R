@@ -11,7 +11,6 @@
 #'
 #' @examples
 camera_grid <- function(DT, id, case, distance, coords) {
-
 	if (case == 'queen') {
 		move <- data.table::CJ(c(-distance, 0, distance),
 													 c(-distance, 0, distance))
@@ -23,8 +22,8 @@ camera_grid <- function(DT, id, case, distance, coords) {
 																	 c(distance, 0, -distance, 0))
 	}
 
-	DT[rep(1:.N, times = n + 1),
-		 .SD +  CJ(c(-distance, 0, distance), c(-distance, 0, distance)),
+	DT[rep(1:.N, times = nrow(move)),
+		 .SD + move,
 		 .SDcols = coords,
-		 by = id]
+		 by = c(id)]
 }

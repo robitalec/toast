@@ -4,7 +4,7 @@
 \alias{camera_grid}
 \title{Camera grid}
 \usage{
-camera_grid(DT, id, n, distance, coords)
+camera_grid(DT, id, case, distance, coords)
 }
 \arguments{
 \item{coords}{}
