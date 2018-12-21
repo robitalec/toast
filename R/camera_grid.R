@@ -2,7 +2,7 @@
 #'
 #' @param DT
 #' @param id
-#' @param n
+#' @param case
 #' @param distance
 #' @param coords
 #'
@@ -10,7 +10,19 @@
 #' @export
 #'
 #' @examples
-camera_grid <- function(DT, id, n, distance, coords) {
+camera_grid <- function(DT, id, case, distance, coords) {
+
+	if (case == 'queen') {
+		move <- data.table::CJ(c(-distance, 0, distance),
+													 c(-distance, 0, distance))
+	} else if (case == 'rook') {
+		move <- data.table::CJ(c(-distance, distance),
+													 c(-distance, distance))
+	} else if (case == 'bishop') {
+		move <- data.table::data.table(c(0, distance, 0, -distance),
+																	 c(distance, 0, -distance, 0))
+	}
+
 	DT[rep(1:.N, times = n + 1),
 		 .SD +  CJ(c(-distance, 0, distance), c(-distance, 0, distance)),
 		 .SDcols = coords,
