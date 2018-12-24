@@ -1,4 +1,4 @@
-#' build ee asset
+#' build pt asset
 #'
 #' Build an Earth Engine asset from a data.table of locs.
 #'
@@ -30,13 +30,13 @@
 #' # Set string of project
 #' utm21N <- '+proj=utm +zone=21 ellps=WGS84'
 #'
-#' # Setnames to build_ee_asset defaults
+#' # Setnames to build_pt_asset defaults
 #' data.table::setnames(DT, 'ID', 'id')
 #'
 #' # Write out shapefile and zip for EE
 #' # (not run)
-#' # build_ee_asset(DT, 'data/derived-data/48hr-caribou', utm21N)
-build_ee_asset <-
+#' # build_pt_asset(DT, 'data/derived-data/48hr-caribou', utm21N)
+build_pt_asset <-
 	function(DT,
 					 out,
 					 projection,
@@ -53,6 +53,30 @@ build_ee_asset <-
 		rgdal::writeOGR(pts,
 										out,
 										utils::tail(data.table::tstrsplit(out, '/'), n = 1L),
+										driver = "ESRI Shapefile",
+										overwrite_layer = overwrite)
+
+		utils::zip(paste0(out, '.zip'), dir(out, full.names = TRUE))
+	}
+
+
+
+#' build pol asset
+#'
+#' @param pol polygon
+#' @inheritParams build_pt_asset
+#'
+#' @return
+#' @export
+#'
+#' @examples
+build_pol_asset <-
+	function(pol,
+					 out,
+					 overwrite = FALSE) {
+		rgdal::writeOGR(pol,
+										dsn = out,
+										layer = utils::tail(data.table::tstrsplit(out, '/'), n = 1L),
 										driver = "ESRI Shapefile",
 										overwrite_layer = overwrite)
 
