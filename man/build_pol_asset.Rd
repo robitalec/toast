@@ -14,5 +14,5 @@ build_pol_asset(pol, out, overwrite = FALSE)
 \item{overwrite}{boolean passed to option \code{overwrite_layer} in \code{writeOGR}}
 }
 \description{
-build pol asset
+Requires RTools to be installed if system is Windows.
 }

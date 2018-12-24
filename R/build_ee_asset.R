@@ -63,6 +63,8 @@ build_pt_asset <-
 
 #' build pol asset
 #'
+#' Requires RTools to be installed if system is Windows.
+#'
 #' @param pol polygon
 #' @inheritParams build_pt_asset
 #'
