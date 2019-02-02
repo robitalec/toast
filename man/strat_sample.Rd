@@ -7,7 +7,13 @@
 strat_sample(x, n, col, returnDT = TRUE)
 }
 \arguments{
-\item{returnDT}{}
+\item{x}{polygon object of class sf}
+
+\item{n}{number of random points}
+
+\item{col}{column in x indicating strata}
+
+\item{returnDT}{return a data.table (TRUE) or sf (FALSE) object}
 }
 \value{
 Either a \code{sf} object or a \code{data.table} with a \code{sfc} (simple feature column).
