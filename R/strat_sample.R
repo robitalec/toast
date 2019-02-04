@@ -19,7 +19,7 @@ strat_sample <- function(x, n, col, returnDT = TRUE) {
 	})
 
 	if (returnDT) {
-		return(rbindlist(DT, idcol = 'ID'))
+		return(rbindlist(DT)[, ID := 1:.N])
 	} else {
 		out <- do.call(rbind, DT)
 		out$ID <- 1:nrow(out)
