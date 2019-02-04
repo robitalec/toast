@@ -18,9 +18,11 @@ strat_sample <- function(x, n, col, returnDT = TRUE) {
 							geometry = sf::st_sample(x[x[[col]] == l, ], n, type = 'random'))
 	})
 
-	if(returnDT) {
-		return(rbindlist(DT))
+	if (returnDT) {
+		return(rbindlist(DT, idcol = 'ID'))
 	} else {
-		return(do.call(rbind, DT))
+		out <- do.call(rbind, DT)
+		out$ID <- 1:nrow(out)
+		return(out)
 	}
 }
