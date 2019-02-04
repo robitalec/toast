@@ -3,7 +3,6 @@
 export(bounding)
 export(build_pol_asset)
 export(build_pt_asset)
-export(camera_grid)
 export(dyad_id)
 export(feat_dist_to)
 export(step_length)
